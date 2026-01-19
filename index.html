@@ -19,6 +19,8 @@
             --bg-card: #FFFFFF;  /* 卡片背景-纯白，分区隔离 */
             --gray: #666666;     /* 灰色-次要文本 */
             --light-gray: #E5E1DB; /* 浅灰-分割线/边框 */
+            --mark-color: #F1D6D6; /* 新增：划线高亮底色-浅暗红，护眼不刺眼 */
+            --menu-bg: #ffffff;  /* 新增：悬浮菜单背景 */
         }
         body {
             background-color: var(--bg-light);
@@ -26,6 +28,7 @@
             line-height: 1.8;
             font-size: 16px;
             padding-top: 70px;
+            position: relative;
         }
         a {
             text-decoration: none;
@@ -205,6 +208,7 @@
             transition: all 0.3s;
             opacity: 0;
             pointer-events: none;
+            z-index: 998;
         }
         .back-to-top.show {
             opacity: 1;
@@ -248,6 +252,181 @@
                 bottom: 20px;
                 right: 20px;
             }
+            .comment-panel {
+                width: 90% !important;
+                left: 5% !important;
+            }
+            .selection-menu {
+                transform: scale(0.9);
+            }
+        }
+        /* ====================== 新增：划线评论功能 所有样式 ====================== */
+        /* 选中文字的高亮样式 */
+        mark.highlight-text {
+            background-color: var(--mark-color);
+            color: var(--primary);
+            padding: 0 2px;
+            border-radius: 2px;
+        }
+        /* 选中文本后弹出的悬浮菜单 */
+        .selection-menu {
+            position: absolute;
+            background: var(--menu-bg);
+            border-radius: 6px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 8px;
+            display: flex;
+            gap: 8px;
+            z-index: 997;
+            border: 1px solid var(--light-gray);
+            display: none;
+        }
+        .selection-menu button {
+            border: none;
+            background: none;
+            color: var(--primary);
+            cursor: pointer;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        .selection-menu button:hover {
+            background-color: var(--mark-color);
+            color: var(--accent);
+        }
+        .selection-menu button:active {
+            background-color: var(--accent);
+            color: white;
+        }
+        /* 评论输入弹窗 */
+        .comment-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--bg-card);
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            padding: 20px;
+            width: 400px;
+            z-index: 1000;
+            display: none;
+        }
+        .comment-modal h5 {
+            color: var(--accent);
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        .comment-modal textarea {
+            width: 100%;
+            min-height: 80px;
+            padding: 10px;
+            border: 1px solid var(--light-gray);
+            border-radius: 4px;
+            resize: none;
+            font-family: inherit;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        .comment-modal .modal-btn-group {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        .comment-modal button {
+            padding: 6px 15px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .btn-cancel {
+            background-color: var(--bg-light);
+            color: var(--gray);
+        }
+        .btn-save {
+            background-color: var(--accent);
+            color: white;
+        }
+        .btn-save:hover {
+            background-color: #A83A3A;
+        }
+        /* 批注面板：展示所有划线+评论 */
+        .comment-panel {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            background: var(--bg-card);
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 15px;
+            width: 300px;
+            max-height: calc(100vh - 100px);
+            overflow-y: auto;
+            z-index: 996;
+            border: 1px solid var(--light-gray);
+        }
+        .comment-panel h4 {
+            color: var(--accent);
+            font-size: 18px;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        .comment-item {
+            padding: 10px 0;
+            border-bottom: 1px dashed var(--light-gray);
+            font-size: 13px;
+        }
+        .comment-item .mark-text {
+            color: var(--primary);
+            font-weight: 500;
+            margin-bottom: 5px;
+            display: block;
+            line-height: 1.5;
+        }
+        .comment-item .mark-comment {
+            color: var(--accent);
+            margin-bottom: 5px;
+            line-height: 1.5;
+        }
+        .comment-item .mark-time {
+            color: var(--gray);
+            font-size: 12px;
+        }
+        .comment-item .del-btn {
+            margin-top: 8px;
+            background: none;
+            border: none;
+            color: var(--gray);
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .comment-item .del-btn:hover {
+            color: var(--accent);
+        }
+        .clear-all {
+            margin-top: 15px;
+            width: 100%;
+            padding: 6px;
+            border: 1px solid var(--light-gray);
+            border-radius: 4px;
+            background: var(--bg-light);
+            color: var(--gray);
+            cursor: pointer;
+            font-size: 13px;
+        }
+        .clear-all:hover {
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+        .empty-tip {
+            text-align: center;
+            color: var(--gray);
+            font-size: 14px;
+            padding: 20px 0;
         }
     </style>
 </head>
@@ -339,8 +518,30 @@
         <p>《资本论》研读心得 · 个人读书笔记 | 用心读经典，以悟知本质 © 2026</p>
     </footer>
 
+    <!-- ====================== 新增：划线评论功能 所有HTML结构 ====================== -->
+    <!-- 选中文本悬浮菜单 -->
+    <div class="selection-menu" id="selectionMenu">
+        <button id="onlyMarkBtn">仅划线标注</button>
+        <button id="addCommentBtn">划线+写评论</button>
+    </div>
+    <!-- 评论输入弹窗 -->
+    <div class="comment-modal" id="commentModal">
+        <h5>添加你的读书笔记/批注</h5>
+        <textarea id="commentInput" placeholder="写下你的思考、感悟、批注..."></textarea>
+        <div class="modal-btn-group">
+            <button class="btn-cancel" id="cancelBtn">取消</button>
+            <button class="btn-save" id="saveCommentBtn">保存批注</button>
+        </div>
+    </div>
+    <!-- 我的批注面板 -->
+    <div class="comment-panel" id="commentPanel">
+        <h4>📖 我的读书笔记</h4>
+        <div id="commentList" class="comment-list"></div>
+        <button class="clear-all" id="clearAllBtn">清空所有批注</button>
+    </div>
+
     <script>
-        // 回到顶部按钮逻辑
+        // 原有所有功能逻辑 - 完全保留
         const backToTop = document.getElementById('backToTop');
         window.addEventListener('scroll', () => {
             if (window.scrollY > 300) {
@@ -355,8 +556,6 @@
                 behavior: 'smooth'
             });
         });
-
-        // 平滑滚动（导航点击跳转）
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -365,6 +564,189 @@
                 });
             });
         });
+
+        // ====================== 新增：划线评论功能 完整核心JS逻辑 ======================
+        // 核心变量定义
+        const selectionMenu = document.getElementById('selectionMenu');
+        const commentModal = document.getElementById('commentModal');
+        const commentPanel = document.getElementById('commentPanel');
+        const onlyMarkBtn = document.getElementById('onlyMarkBtn');
+        const addCommentBtn = document.getElementById('addCommentBtn');
+        const saveCommentBtn = document.getElementById('saveCommentBtn');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const clearAllBtn = document.getElementById('clearAllBtn');
+        const commentInput = document.getElementById('commentInput');
+        const commentList = document.getElementById('commentList');
+        let selectedText = '';
+        let selectedRange = null;
+        const STORAGE_KEY = 'marx_note_highlights';
+
+        // 初始化：页面加载时渲染所有历史划线和评论
+        window.addEventListener('DOMContentLoaded', renderHighlights);
+
+        // 监听选中文本事件
+        document.addEventListener('mouseup', (e) => {
+            const selection = window.getSelection();
+            selectedText = selection.toString().trim();
+            if (selectedText && selection.rangeCount > 0) {
+                selectedRange = selection.getRangeAt(0);
+                const rect = selectedRange.getBoundingClientRect();
+                // 定位悬浮菜单到选中文本下方
+                selectionMenu.style.left = `${rect.left + window.scrollX}px`;
+                selectionMenu.style.top = `${rect.bottom + window.scrollY + 5}px`;
+                selectionMenu.style.display = 'flex';
+            } else {
+                selectionMenu.style.display = 'none';
+            }
+        });
+
+        // 点击空白处隐藏菜单
+        document.addEventListener('mousedown', (e) => {
+            if (!selectionMenu.contains(e.target) && !commentModal.contains(e.target)) {
+                selectionMenu.style.display = 'none';
+            }
+        });
+
+        // 仅划线标注
+        onlyMarkBtn.addEventListener('click', () => {
+            if (selectedText) {
+                saveHighlight(selectedText, '');
+                highlightSelectedText();
+                hideMenuAndModal();
+            }
+        });
+
+        // 打开评论弹窗
+        addCommentBtn.addEventListener('click', () => {
+            if (selectedText) {
+                commentInput.value = '';
+                commentModal.style.display = 'block';
+                commentInput.focus();
+                selectionMenu.style.display = 'none';
+            }
+        });
+
+        // 取消评论
+        cancelBtn.addEventListener('click', () => {
+            hideMenuAndModal();
+        });
+
+        // 保存评论+划线
+        saveCommentBtn.addEventListener('click', () => {
+            const comment = commentInput.value.trim();
+            if (selectedText) {
+                saveHighlight(selectedText, comment);
+                highlightSelectedText();
+                hideMenuAndModal();
+            }
+        });
+
+        // 清空所有批注
+        clearAllBtn.addEventListener('click', () => {
+            if (confirm('确定要清空所有划线和批注吗？数据将永久删除！')) {
+                localStorage.removeItem(STORAGE_KEY);
+                document.querySelectorAll('mark.highlight-text').forEach(mark => {
+                    const parent = mark.parentNode;
+                    parent.replaceChild(document.createTextNode(mark.textContent), mark);
+                    parent.normalize();
+                });
+                renderComments();
+            }
+        });
+
+        // 核心方法：保存划线和评论到本地存储
+        function saveHighlight(text, comment) {
+            const highlights = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+            highlights.push({
+                id: Date.now(),
+                text: text,
+                comment: comment,
+                time: new Date().toLocaleString('zh-CN')
+            });
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(highlights));
+            renderComments();
+        }
+
+        // 核心方法：给选中的文本添加高亮样式
+        function highlightSelectedText() {
+            const mark = document.createElement('mark');
+            mark.className = 'highlight-text';
+            selectedRange.surroundContents(mark);
+            window.getSelection().removeAllRanges();
+        }
+
+        // 渲染所有历史划线
+        function renderHighlights() {
+            const highlights = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+            highlights.forEach(item => {
+                highlightTextInPage(item.text);
+            });
+            renderComments();
+        }
+
+        // 页面内文本高亮匹配
+        function highlightTextInPage(text) {
+            const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
+            const nodes = [];
+            let node;
+            while (node = walker.nextNode()) {
+                if (node.parentElement && !['SCRIPT', 'STYLE', 'TEXTAREA', 'BUTTON'].includes(node.parentElement.tagName)) {
+                    nodes.push(node);
+                }
+            }
+            nodes.forEach(node => {
+                const content = node.textContent;
+                const index = content.indexOf(text);
+                if (index !== -1) {
+                    const mark = document.createElement('mark');
+                    mark.className = 'highlight-text';
+                    const textNode = document.createTextNode(text);
+                    mark.appendChild(textNode);
+                    const parent = node.parentNode;
+                    parent.insertBefore(document.createTextNode(content.substring(0, index)), node);
+                    parent.insertBefore(mark, node);
+                    node.textContent = content.substring(index + text.length);
+                }
+            });
+        }
+
+        // 渲染批注列表
+        function renderComments() {
+            const highlights = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+            commentList.innerHTML = '';
+            if (highlights.length === 0) {
+                commentList.innerHTML = '<div class="empty-tip">暂无批注，选中文本可添加划线/评论</div>';
+                return;
+            }
+            // 倒序展示，最新的在最上面
+            highlights.reverse().forEach(item => {
+                const itemDom = document.createElement('div');
+                itemDom.className = 'comment-item';
+                itemDom.innerHTML = `
+                    <span class="mark-text">「${item.text}」</span>
+                    ${item.comment ? `<div class="mark-comment">✍️ ${item.comment}</div>` : ''}
+                    <div class="mark-time">${item.time}</div>
+                    <button class="del-btn" data-id="${item.id}">删除此批注</button>
+                `;
+                commentList.appendChild(itemDom);
+                // 删除单条批注
+                itemDom.querySelector('.del-btn').addEventListener('click', (e) => {
+                    const id = parseInt(e.target.dataset.id);
+                    const newHighlights = highlights.filter(h => h.id !== id);
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(newHighlights));
+                    renderHighlights();
+                });
+            });
+        }
+
+        // 隐藏菜单和弹窗
+        function hideMenuAndModal() {
+            selectionMenu.style.display = 'none';
+            commentModal.style.display = 'none';
+            window.getSelection().removeAllRanges();
+            selectedText = '';
+            selectedRange = null;
+        }
     </script>
 </body>
 </html>
